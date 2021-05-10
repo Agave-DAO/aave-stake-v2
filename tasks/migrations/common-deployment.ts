@@ -28,9 +28,9 @@ task('common-deployment', 'Deployment in for Main, Kovan and Ropsten networks')
       checkVerification();
     }
 
-    await DRE.run(`deploy-${eContractid.StakedAave}`, { verify, vaultAddress, aaveAddress });
+    await DRE.run(`deploy-${eContractid.StakedAgave}`, { verify, vaultAddress, aaveAddress });
 
-    await DRE.run(`initialize-${eContractid.StakedAave}`, {
+    await DRE.run(`initialize-${eContractid.StakedAgave}`, {
       admin: aaveAdmin,
     });
 

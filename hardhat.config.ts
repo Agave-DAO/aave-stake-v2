@@ -98,7 +98,18 @@ const config: HardhatUserConfig = {
   },
   networks: {
     kovan: getCommonNetworkConfig(eEthereumNetwork.kovan, 42),
+    rinkeby: { 
+      ...getCommonNetworkConfig(eEthereumNetwork.rinkeby, 4),
+      gasPrice: 1000000000,
+      blockGasLimit: 10000000,
+      url: 'http://rinkeby:8558/'
+    },
     ropsten: getCommonNetworkConfig(eEthereumNetwork.ropsten, 3),
+    xdai: { 
+      ...getCommonNetworkConfig(eEthereumNetwork.xdai, 100),
+      gasPrice: 1000000000,
+      url: 'http://xdai:8545/'
+    },
     main: getCommonNetworkConfig(eEthereumNetwork.main, 1),
     hardhat: {
       hardfork: 'istanbul',

@@ -5,12 +5,14 @@ export enum eEthereumNetwork {
   hardhat = 'hardhat',
   kovan = 'kovan',
   ropsten = 'ropsten',
+  rinkeby = 'rinkeby',
+  xdai = 'xdai',
   main = 'main',
 }
 
 export enum eContractid {
   DistributionManager = 'DistributionManager',
-  StakedAave = 'StakedAave',
+  StakedAgave = 'StakedAgave',
   StakedAaveImpl = 'StakedAaveImpl',
   AaveIncentivesController = 'AaveIncentivesController',
   IERC20Detailed = 'IERC20Detailed',
@@ -43,5 +45,7 @@ export interface iParamsPerNetwork<T> {
   [eEthereumNetwork.hardhat]: T;
   [eEthereumNetwork.kovan]: T;
   [eEthereumNetwork.ropsten]: T;
+  [eEthereumNetwork.rinkeby]: T;
+  [eEthereumNetwork.xdai]: T;
   [eEthereumNetwork.main]: T;
 }

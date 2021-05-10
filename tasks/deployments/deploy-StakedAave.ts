@@ -16,9 +16,9 @@ import {
 } from '../../helpers/contracts-accessors';
 import { checkVerification } from '../../helpers/etherscan-verification';
 
-const { StakedAave, StakedAaveImpl } = eContractid;
+const { StakedAgave, StakedAaveImpl } = eContractid;
 
-task(`deploy-${StakedAave}`, `Deploys the ${StakedAave} contract`)
+task(`deploy-${StakedAgave}`, `Deploys the ${StakedAgave} contract`)
   .addFlag('verify', 'Verify StakedAave contract via Etherscan API.')
   .addOptionalParam(
     'vaultAddress',
@@ -39,9 +39,9 @@ task(`deploy-${StakedAave}`, `Deploys the ${StakedAave} contract`)
 
     const network = localBRE.network.name as eEthereumNetwork;
 
-    console.log(`\n- ${StakedAave} deployment`);
+    console.log(`\n- ${StakedAgave} deployment`);
 
-    console.log(`\tDeploying ${StakedAave} implementation ...`);
+    console.log(`\tDeploying ${StakedAgave} implementation ...`);
     const stakedAaveImpl = await deployStakedAave(
       [
         aaveAddress || getAaveTokenPerNetwork(network),
@@ -49,7 +49,10 @@ task(`deploy-${StakedAave}`, `Deploys the ${StakedAave} contract`)
         getCooldownSecondsPerNetwork(network),
         getUnstakeWindowPerNetwork(network),
         vaultAddress || getAaveIncentivesVaultPerNetwork(network),
-        getAaveAdminPerNetwork(network),
+        // We can't use the AaveAdmin here because we're using it as the proxy admin,
+        // and the proxy admin can't call the proxied-to contract
+        // The vault will be fine, since it's what's paying the bills anyway
+        vaultAddress || getAaveIncentivesVaultPerNetwork(network), //getAaveAdminPerNetwork(network),
         getDistributionDurationPerNetwork(network),
       ],
       false // disable verify due not supported by current buidler etherscan plugin
@@ -57,9 +60,9 @@ task(`deploy-${StakedAave}`, `Deploys the ${StakedAave} contract`)
     await stakedAaveImpl.deployTransaction.wait();
     await registerContractInJsonDb(StakedAaveImpl, stakedAaveImpl);
 
-    console.log(`\tDeploying ${StakedAave} Transparent Proxy ...`);
+    console.log(`\tDeploying ${StakedAgave} Transparent Proxy ...`);
     const stakedAaveProxy = await deployInitializableAdminUpgradeabilityProxy(verify);
-    await registerContractInJsonDb(StakedAave, stakedAaveProxy);
+    await registerContractInJsonDb(StakedAgave, stakedAaveProxy);
 
-    console.log(`\tFinished ${StakedAave} proxy and implementation deployment`);
+    console.log(`\tFinished ${StakedAgave} proxy and implementation deployment`);
   });

@@ -6,13 +6,13 @@ import {IERC20} from '../interfaces/IERC20.sol';
 import {StakedToken} from './StakedToken.sol';
 
 /**
- * @title StakedAave
- * @notice StakedToken with AAVE token as staked token
+ * @title StakedAgave
+ * @notice StakedToken with AGVE token as staked token
  * @author Aave
  **/
-contract StakedAave is StakedToken {
-  string internal constant NAME = 'Staked Aave';
-  string internal constant SYMBOL = 'stkAAVE';
+contract StakedAgave is StakedToken {
+  string internal constant NAME = 'Staked Agave';
+  string internal constant SYMBOL = 'stkAGVE';
   uint8 internal constant DECIMALS = 18;
 
   constructor(

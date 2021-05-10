@@ -13,16 +13,16 @@ import {
   getStakedAaveProxy,
 } from '../../helpers/contracts-accessors';
 
-const { StakedAave } = eContractid;
+const { StakedAgave } = eContractid;
 
-task(`initialize-${StakedAave}`, `Initialize the ${StakedAave} proxy contract`)
-  .addParam('admin', `The address to be added as an Admin role in ${StakedAave} Transparent Proxy.`)
+task(`initialize-${StakedAgave}`, `Initialize the ${StakedAgave} proxy contract`)
+  .addParam('admin', `The address to be added as an Admin role in ${StakedAgave} Transparent Proxy.`)
   .setAction(async ({ admin: aaveAdmin }, localBRE) => {
     await localBRE.run('set-dre');
 
     if (!aaveAdmin) {
       throw new Error(
-        `Missing --admin parameter to add the Admin Role to ${StakedAave} Transparent Proxy`
+        `Missing --admin parameter to add the Admin Role to ${StakedAgave} Transparent Proxy`
       );
     }
 
@@ -30,7 +30,7 @@ task(`initialize-${StakedAave}`, `Initialize the ${StakedAave} proxy contract`)
       throw new Error('INVALID_CHAIN_ID');
     }
 
-    console.log(`\n- ${StakedAave} initialization`);
+    console.log(`\n- ${StakedAgave} initialization`);
 
     const stakedAaveImpl = await getStakedAaveImpl();
     const stakedAaveProxy = await getStakedAaveProxy();

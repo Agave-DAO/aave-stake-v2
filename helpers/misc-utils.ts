@@ -21,7 +21,7 @@ export const setDRE = (_DRE: HardhatRuntimeEnvironment) => {
 };
 
 export const getParamPerNetwork = <T>(
-  { kovan, ropsten, main, hardhat }: iParamsPerNetwork<T>,
+  { kovan, ropsten, rinkeby, xdai, main, hardhat }: iParamsPerNetwork<T>,
   network: eEthereumNetwork
 ) => {
   switch (network) {
@@ -31,6 +31,10 @@ export const getParamPerNetwork = <T>(
       return kovan;
     case eEthereumNetwork.ropsten:
       return ropsten;
+    case eEthereumNetwork.rinkeby:
+      return rinkeby;
+    case eEthereumNetwork.xdai:
+      return xdai;
     case eEthereumNetwork.main:
       return main;
     default:

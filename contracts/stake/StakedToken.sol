@@ -5,7 +5,8 @@ pragma experimental ABIEncoderV2;
 import {IERC20} from '../interfaces/IERC20.sol';
 import {IStakedAave} from '../interfaces/IStakedAave.sol';
 import {ITransferHook} from '../interfaces/ITransferHook.sol';
-import {ERC20WithSnapshot} from '../lib/ERC20WithSnapshot.sol';
+import {ERC20Snapshot} from '../lib/ERC20Snapshot.sol';
+import {ERC20} from "../lib/ERC20.sol";
 import {SafeERC20} from '../lib/SafeERC20.sol';
 import {VersionedInitializable} from '../utils/VersionedInitializable.sol';
 import {DistributionTypes} from '../lib/DistributionTypes.sol';
@@ -19,7 +20,7 @@ import {SafeMath} from '../lib/SafeMath.sol';
  **/
 contract StakedToken is
   IStakedAave,
-  ERC20WithSnapshot,
+  ERC20Snapshot,
   VersionedInitializable,
   AaveDistributionManager
 {
@@ -62,7 +63,7 @@ contract StakedToken is
     uint8 decimals
   )
     public
-    ERC20WithSnapshot(name, symbol, decimals)
+    ERC20(name, symbol, decimals)
     AaveDistributionManager(emissionManager, distributionDuration)
   {
     STAKED_TOKEN = stakedToken;
@@ -84,7 +85,6 @@ contract StakedToken is
     _setName(name);
     _setSymbol(symbol);
     _setDecimals(decimals);
-    _setAaveGovernance(aaveGovernance);
   }
 
   function stake(address onBehalfOf, uint256 amount) external override {

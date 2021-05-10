@@ -1,7 +1,7 @@
 import { deployContract, getContractFactory, getContract } from './contracts-helpers';
 import { eContractid, tEthereumAddress } from './types';
 import { MintableErc20 } from '../types/MintableErc20';
-import { StakedAave } from '../types/StakedAave';
+import { StakedAgave } from '../types/StakedAgave';
 import { StakedAaveV2 } from '../types/StakedAaveV2';
 import { IcrpFactory } from '../types/IcrpFactory'; // Configurable right pool factory
 import { IConfigurableRightsPool } from '../types/IConfigurableRightsPool';
@@ -42,7 +42,7 @@ export const deployStakedAave = async (
   ],
   verify?: boolean
 ) => {
-  const id = eContractid.StakedAave;
+  const id = eContractid.StakedAgave;
   const args: string[] = [
     stakedToken,
     rewardsToken,
@@ -52,7 +52,7 @@ export const deployStakedAave = async (
     emissionManager,
     distributionDuration,
   ];
-  const instance = await deployContract<StakedAave>(id, args);
+  const instance = await deployContract<StakedAgave>(id, args);
   if (verify) {
     await verifyContract(instance.address, args);
   }
@@ -266,19 +266,19 @@ export const deployDoubleTransferHelper = async (aaveToken: tEthereumAddress, ve
 
 export const getMintableErc20 = getContractFactory<MintableErc20>(eContractid.MintableErc20);
 
-export const getStakedAave = getContractFactory<StakedAave>(eContractid.StakedAave);
+export const getStakedAave = getContractFactory<StakedAgave>(eContractid.StakedAgave);
 export const getStakedAaveV2 = getContractFactory<StakedAaveV2>(eContractid.StakedAaveV2);
 
 export const getStakedAaveProxy = async (address?: tEthereumAddress) => {
   return await getContract<InitializableAdminUpgradeabilityProxy>(
     eContractid.InitializableAdminUpgradeabilityProxy,
-    address || (await getDb().get(`${eContractid.StakedAave}.${DRE.network.name}`).value()).address
+    address || (await getDb().get(`${eContractid.StakedAgave}.${DRE.network.name}`).value()).address
   );
 };
 
 export const getStakedAaveImpl = async (address?: tEthereumAddress) => {
-  return await getContract<StakedAave>(
-    eContractid.StakedAave,
+  return await getContract<StakedAgave>(
+    eContractid.StakedAgave,
     address ||
       (await getDb().get(`${eContractid.StakedAaveImpl}.${DRE.network.name}`).value()).address
   );

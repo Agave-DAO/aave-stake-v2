@@ -9,8 +9,8 @@ export const COOLDOWN_SECONDS = '3600'; // 1 hour in seconds
 export const UNSTAKE_WINDOW = '1800'; // 30 min in seconds
 export const DISTRIBUTION_DURATION = '86400'; // 1 day in seconds
 
-export const STAKED_AAVE_NAME = 'Staked Aave';
-export const STAKED_AAVE_SYMBOL = 'stkAAVE';
+export const STAKED_AAVE_NAME = 'Staked Agave';
+export const STAKED_AAVE_SYMBOL = 'stkAGVE';
 export const STAKED_AAVE_DECIMALS = 18;
 
 export const AAVE_GOVERNANCE_V2 = '0xEC568fffba86c094cf06b22134B23074DFE2252c';
@@ -51,9 +51,11 @@ export const getAaveTokenPerNetwork = (network: eEthereumNetwork): tEthereumAddr
     {
       [eEthereumNetwork.coverage]: ZERO_ADDRESS,
       [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
-      [eEthereumNetwork.kovan]: '0xe4483afcf0d612c011679C76B61F5b0d27bAF93C',
-      [eEthereumNetwork.ropsten]: '0x74dA004A1B81b4d0C79F5820f9FF22647cb1dD95',
-      [eEthereumNetwork.main]: '0x9c0435779F5E52CEC404D957C9bAa6f7d674C8bA',
+      [eEthereumNetwork.kovan]: '',
+      [eEthereumNetwork.ropsten]: '',
+      [eEthereumNetwork.rinkeby]: '0x838341c70E1f02382AdA5e867DA7E5EC85fC47b7',
+      [eEthereumNetwork.xdai]: '0x3a97704a1b25F08aa230ae53B352e2e72ef52843',
+      [eEthereumNetwork.main]: '',
     },
     network
   );
@@ -65,6 +67,8 @@ export const getCooldownSecondsPerNetwork = (network: eEthereumNetwork): tEthere
       [eEthereumNetwork.hardhat]: COOLDOWN_SECONDS,
       [eEthereumNetwork.kovan]: '21600', // 8h
       [eEthereumNetwork.ropsten]: '180', // 3m
+      [eEthereumNetwork.rinkeby]: '180', // 3m
+      [eEthereumNetwork.xdai]: '864000', // 10d
       [eEthereumNetwork.main]: '864000', // 10d
     },
     network
@@ -77,6 +81,8 @@ export const getUnstakeWindowPerNetwork = (network: eEthereumNetwork): tEthereum
       [eEthereumNetwork.hardhat]: UNSTAKE_WINDOW,
       [eEthereumNetwork.kovan]: '10800', // 4h
       [eEthereumNetwork.ropsten]: '240', // 4m
+      [eEthereumNetwork.rinkeby]: '240', // 4m
+      [eEthereumNetwork.xdai]: '172800', // 2d
       [eEthereumNetwork.main]: '172800', // 2d
     },
     network
@@ -87,9 +93,11 @@ export const getAaveAdminPerNetwork = (network: eEthereumNetwork): tEthereumAddr
     {
       [eEthereumNetwork.coverage]: ZERO_ADDRESS,
       [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
-      [eEthereumNetwork.kovan]: '0x8134929c3dcb1b8b82f27f53424b959fb82182f2', // Aave Governance
-      [eEthereumNetwork.ropsten]: '0xEd93e49A2d75beA505fD4D1A0Dff745f69F2E997', // Aave Governance
-      [eEthereumNetwork.main]: '0x8a2Efd9A790199F4c94c6effE210fce0B4724f52', // Aave Governance
+      [eEthereumNetwork.kovan]: '', // Aave Governance
+      [eEthereumNetwork.ropsten]: '', // Aave Governance
+      [eEthereumNetwork.rinkeby]: '0x32b1ca2182eE26F8c5A6CB6Ed285Ef3304a4F5BE', // Rinkeby Agave Deployer
+      [eEthereumNetwork.xdai]: '0xd811a03EEb2623556bf05bcD7F58874D2d784C26', // Agave DAO Agent
+      [eEthereumNetwork.main]: '', // Aave Governance
     },
     network
   );
@@ -101,6 +109,8 @@ export const getDistributionDurationPerNetwork = (network: eEthereumNetwork): tE
       [eEthereumNetwork.hardhat]: DISTRIBUTION_DURATION,
       [eEthereumNetwork.kovan]: '864000',
       [eEthereumNetwork.ropsten]: '864000',
+      [eEthereumNetwork.rinkeby]: '432000', // 5 days
+      [eEthereumNetwork.xdai]: '16300000', // Number of seconds from deploy time until Nov 15 2021
       [eEthereumNetwork.main]: '12960000', // 5 months (30 days) in seconds
     },
     network
@@ -110,10 +120,12 @@ export const getAaveIncentivesVaultPerNetwork = (network: eEthereumNetwork): tEt
   getParamPerNetwork<tEthereumAddress>(
     {
       [eEthereumNetwork.coverage]: '',
-      [eEthereumNetwork.hardhat]: '',
+      [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
       [eEthereumNetwork.kovan]: '',
       [eEthereumNetwork.ropsten]: '',
-      [eEthereumNetwork.main]: '0x253f7b06c1d60c1fbbc9d82c301327eb86e3ba81',
+      [eEthereumNetwork.rinkeby]: '0x2d206Fd0C7c76016234810232159b05562608A42',
+      [eEthereumNetwork.xdai]: '0x70225281599Ba586039E7BD52736681DFf6c2Fc4',
+      [eEthereumNetwork.main]: '',
     },
     network
   );
