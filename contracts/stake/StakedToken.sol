@@ -12,7 +12,7 @@ import {VersionedInitializable} from '../utils/VersionedInitializable.sol';
 import {DistributionTypes} from '../lib/DistributionTypes.sol';
 import {AaveDistributionManager} from './AaveDistributionManager.sol';
 import {SafeMath} from '../lib/SafeMath.sol';
-import {TokenManagerHook} from '../lib/TokenManagerHook.sol';
+import {TokenManagerHook} from '../lib/Aragon/TokenManagerHook.sol';
 import {Ownable} from '../lib/Ownable.sol';
 
 /**
@@ -34,6 +34,7 @@ contract StakedToken is
 
   mapping(uint256 => TokenManagerHook) public hooks;
   uint256 public hooksLength;
+  ERC20 public agaveToken;
 
   IERC20 public immutable STAKED_TOKEN;
   IERC20 public immutable REWARD_TOKEN;
@@ -83,6 +84,7 @@ contract StakedToken is
    * @dev Called by the proxy contract
    **/
   function initialize(
+    ERC20 _agaveToken,
     ITransferHook aaveGovernance,
     string calldata name,
     string calldata symbol,
@@ -91,6 +93,7 @@ contract StakedToken is
     _setName(name);
     _setSymbol(symbol);
     _setDecimals(decimals);
+    agaveToken = _agaveToken;
   }
 
   /**
@@ -100,7 +103,7 @@ contract StakedToken is
   function registerHook(address _hook) external onlyOwner returns (uint256) {
     uint256 hookId = hooksLength++;
     hooks[hookId] = TokenManagerHook(_hook);
-    hooks[hookId].onRegisterAsHook(hookId, token);
+    hooks[hookId].onRegisterAsHook(hookId, address(agaveToken));
     return hookId;
   }
 
@@ -109,7 +112,7 @@ contract StakedToken is
    * @param _hookId Position of the hook to be removed
    */
   function revokeHook(uint256 _hookId) external onlyOwner {
-    hooks[_hookId].onRevokeAsHook(_hookId, token);
+    hooks[_hookId].onRevokeAsHook(_hookId, address(agaveToken));
     delete hooks[_hookId];
   }
 
@@ -329,7 +332,7 @@ contract StakedToken is
     transferable = true;
     uint256 i = 0;
     while (transferable && i < hooksLength) {
-      if (address(hooks[i]) != 0) {
+      if (address(hooks[i]) != address(0)) {
         transferable = hooks[i].onTransfer(_from, _to, _amount);
       }
       i++;

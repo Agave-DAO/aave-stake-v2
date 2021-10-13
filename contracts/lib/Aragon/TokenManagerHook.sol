@@ -2,9 +2,9 @@
  * SPDX-License-Identitifer:    GPL-3.0-or-later
  */
 
-pragma solidity 0.4.24;
+pragma solidity 0.7.5;
 
-import '@aragon/os/contracts/common/ReentrancyGuard.sol';
+import './ReentrancyGuard.sol';
 
 /**
  * @dev When creating a subcontract, we recommend overriding the _internal_ functions that you want to hook.
