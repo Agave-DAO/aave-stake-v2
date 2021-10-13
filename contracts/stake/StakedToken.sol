@@ -6,12 +6,14 @@ import {IERC20} from '../interfaces/IERC20.sol';
 import {IStakedAave} from '../interfaces/IStakedAave.sol';
 import {ITransferHook} from '../interfaces/ITransferHook.sol';
 import {ERC20Snapshot} from '../lib/ERC20Snapshot.sol';
-import {ERC20} from "../lib/ERC20.sol";
+import {ERC20} from '../lib/ERC20.sol';
 import {SafeERC20} from '../lib/SafeERC20.sol';
 import {VersionedInitializable} from '../utils/VersionedInitializable.sol';
 import {DistributionTypes} from '../lib/DistributionTypes.sol';
 import {AaveDistributionManager} from './AaveDistributionManager.sol';
 import {SafeMath} from '../lib/SafeMath.sol';
+import {TokenManagerHook} from '../lib/TokenManagerHook.sol';
+import {Ownable} from '../lib/Ownable.sol';
 
 /**
  * @title StakedToken
@@ -22,12 +24,16 @@ contract StakedToken is
   IStakedAave,
   ERC20Snapshot,
   VersionedInitializable,
-  AaveDistributionManager
+  AaveDistributionManager,
+  Ownable
 {
   using SafeMath for uint256;
   using SafeERC20 for IERC20;
 
   uint256 public constant REVISION = 1;
+
+  mapping(uint256 => TokenManagerHook) public hooks;
+  uint256 public hooksLength;
 
   IERC20 public immutable STAKED_TOKEN;
   IERC20 public immutable REWARD_TOKEN;
@@ -87,6 +93,26 @@ contract StakedToken is
     _setDecimals(decimals);
   }
 
+  /**
+   * @notice Create a new Token Manager hook for `_hook`
+   * @param _hook Contract that will be used as Token Manager hook
+   */
+  function registerHook(address _hook) external onlyOwner returns (uint256) {
+    uint256 hookId = hooksLength++;
+    hooks[hookId] = TokenManagerHook(_hook);
+    hooks[hookId].onRegisterAsHook(hookId, token);
+    return hookId;
+  }
+
+  /**
+   * @notice Revoke Token Manager hook #`_hookId`
+   * @param _hookId Position of the hook to be removed
+   */
+  function revokeHook(uint256 _hookId) external onlyOwner {
+    hooks[_hookId].onRevokeAsHook(_hookId, token);
+    delete hooks[_hookId];
+  }
+
   function stake(address onBehalfOf, uint256 amount) external override {
     require(amount != 0, 'INVALID_ZERO_AMOUNT');
     uint256 balanceOfUser = balanceOf(onBehalfOf);
@@ -99,7 +125,6 @@ contract StakedToken is
     }
 
     stakersCooldowns[onBehalfOf] = getNextCooldownTimestamp(0, amount, onBehalfOf, balanceOfUser);
-
     _mint(onBehalfOf, amount);
     IERC20(STAKED_TOKEN).safeTransferFrom(msg.sender, address(this), amount);
 
@@ -128,7 +153,6 @@ contract StakedToken is
     uint256 amountToRedeem = (amount > balanceOfMessageSender) ? balanceOfMessageSender : amount;
 
     _updateCurrentUnclaimedRewards(msg.sender, balanceOfMessageSender, true);
-
     _burn(msg.sender, amountToRedeem);
 
     if (balanceOfMessageSender.sub(amountToRedeem) == 0) {
@@ -201,7 +225,7 @@ contract StakedToken is
         stakersCooldowns[from] = 0;
       }
     }
-
+    _triggerOnTransferHook(from, to, amount);
     super._transfer(from, to, amount);
   }
 
@@ -295,6 +319,21 @@ contract StakedToken is
       totalStaked: totalSupply()
     });
     return stakerRewardsToClaim[staker].add(_getUnclaimedRewards(staker, userStakeInputs));
+  }
+
+  function _triggerOnTransferHook(
+    address _from,
+    address _to,
+    uint256 _amount
+  ) internal returns (bool transferable) {
+    transferable = true;
+    uint256 i = 0;
+    while (transferable && i < hooksLength) {
+      if (address(hooks[i]) != 0) {
+        transferable = hooks[i].onTransfer(_from, _to, _amount);
+      }
+      i++;
+    }
   }
 
   /**
