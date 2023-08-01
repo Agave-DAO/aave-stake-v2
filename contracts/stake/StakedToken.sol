@@ -145,10 +145,11 @@ contract StakedToken is
    * - It can't be called if the user is not staking
    **/
   function cooldown() external override {
-    require(balanceOf(msg.sender) != 0, 'INVALID_BALANCE_ON_COOLDOWN');
+    uint256 balanceOfUser = balanceOf(msg.sender);
+    require(balanceOfUser != 0, 'INVALID_BALANCE_ON_COOLDOWN');
     //solium-disable-next-line
-    stakersCooldowns[msg.sender] = block.timestamp;
-
+    uint256 nextCooldown = getNextCooldownTimestamp(0, 0, msg.sender, balanceOfUser);
+    stakersCooldowns[msg.sender] = (nextCooldown == 0) ? block.timestamp : nextCooldown;
     emit Cooldown(msg.sender);
   }
 
