@@ -16,7 +16,7 @@ const DEFAULT_BLOCK_GAS_LIMIT = 12500000;
 const DEFAULT_GAS_PRICE = 100 * 1000 * 1000 * 1000; // 75 gwei
 const HARDFORK = 'istanbul';
 const INFURA_KEY = process.env.INFURA_KEY || '';
-const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY || '';
+const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY || 'BCDN9H9Z9T6ZTZXYN2WWSW1PTJFH9EJDF7';
 const MNEMONIC_PATH = "m/44'/60'/0'/0";
 const MNEMONIC = process.env.MNEMONIC || '';
 const ALCHEMY_KEY = process.env.ALCHEMY_KEY || '';
@@ -98,17 +98,17 @@ const config: HardhatUserConfig = {
   },
   networks: {
     kovan: getCommonNetworkConfig(eEthereumNetwork.kovan, 42),
-    rinkeby: { 
+    rinkeby: {
       ...getCommonNetworkConfig(eEthereumNetwork.rinkeby, 4),
       gasPrice: 1000000000,
       blockGasLimit: 10000000,
-      url: 'http://rinkeby:8558/'
+      url: 'https://eth-rinkeby.alchemyapi.io/v2/JarTrSj2Xj2BrUre5wzHo-AHe8-6c1Lu',
     },
     ropsten: getCommonNetworkConfig(eEthereumNetwork.ropsten, 3),
-    xdai: { 
+    xdai: {
       ...getCommonNetworkConfig(eEthereumNetwork.xdai, 100),
       gasPrice: 1000000000,
-      url: 'http://xdai:8545/'
+      url: 'http://xdai:8545/',
     },
     main: getCommonNetworkConfig(eEthereumNetwork.main, 1),
     hardhat: {

@@ -67,7 +67,7 @@ export const getCooldownSecondsPerNetwork = (network: eEthereumNetwork): tEthere
       [eEthereumNetwork.hardhat]: COOLDOWN_SECONDS,
       [eEthereumNetwork.kovan]: '21600', // 8h
       [eEthereumNetwork.ropsten]: '180', // 3m
-      [eEthereumNetwork.rinkeby]: '180', // 3m
+      [eEthereumNetwork.rinkeby]: '60', // 1m
       [eEthereumNetwork.xdai]: '864000', // 10d
       [eEthereumNetwork.main]: '864000', // 10d
     },
@@ -95,7 +95,7 @@ export const getAaveAdminPerNetwork = (network: eEthereumNetwork): tEthereumAddr
       [eEthereumNetwork.hardhat]: ZERO_ADDRESS,
       [eEthereumNetwork.kovan]: '', // Aave Governance
       [eEthereumNetwork.ropsten]: '', // Aave Governance
-      [eEthereumNetwork.rinkeby]: '0x32b1ca2182eE26F8c5A6CB6Ed285Ef3304a4F5BE', // Rinkeby Agave Deployer
+      [eEthereumNetwork.rinkeby]: '0xdec0DED0606B7d0560ADEBD6C3a919a671dB4D66', // Rinkeby Agave Deployer
       [eEthereumNetwork.xdai]: '0xd811a03EEb2623556bf05bcD7F58874D2d784C26', // Agave DAO Agent
       [eEthereumNetwork.main]: '', // Aave Governance
     },
